@@ -3,7 +3,7 @@
 import { createContext, useEffect, useState } from 'react';
 import { getUser, getUserId, getUserToken } from './getUser';
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 export const AuthContext = createContext<{ user: UserInfo | null }>({
   user: null
@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [userId, setUserId] = useState<RequestCookie | undefined>(undefined);
 
   const router = useRouter();
+  const pathname = usePathname();
 
   const getToken = async () => {
     const userToken = await getUserToken();
@@ -31,14 +32,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   useEffect(() => {
-    console.log("rendered")
     getToken();
     if(!token) {
       setUser(null)
     } else {
       updateUser()
     }
-  }, [router])
+  }, [router, pathname])
 
   return (
     <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>

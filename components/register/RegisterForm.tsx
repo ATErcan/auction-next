@@ -61,10 +61,8 @@ const RegisterForm = () => {
   function onSubmit(values: z.infer<typeof formSchema>) {
     register(values);
     form.reset();
-    router.refresh()
+    router.push('/');
   }
-
-  console.log(form.formState.errors)
 
   return (
     <Form {...form}>
