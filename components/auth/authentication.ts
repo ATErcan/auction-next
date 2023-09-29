@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { storeId, storeToken } from './getUser';
+import { deleteCookie, storeId, storeToken } from './getUser';
 
 export const register = async (userData: RegisterUser) => {  
   try {
@@ -14,22 +14,22 @@ export const register = async (userData: RegisterUser) => {
 
     if (response.status === 201) {
       const data: NewUser = response.data;
-      storeToken(data.token)
-      storeId(data.id)
+      storeToken(data.token);
+      storeId(data.id);
     } else {
       const errorData = response.data;
-      console.log(errorData)
+      console.log(errorData);
     }
   } catch (error) {
     if(axios.isAxiosError(error)){
-      console.log(error.message)
+      console.log(error.message);
     } else {
-      console.log(error)
+      console.log(error);
     }
   }
 }
 
-export const login = async (username: string, password: string, updateUser: (user: UserInfo | null) => void) => {
+export const login = async (username: string, password: string) => {
   try {
     const response = await axios.post('http://127.0.0.1:8000/auth/login/', {
       username,
@@ -38,18 +38,18 @@ export const login = async (username: string, password: string, updateUser: (use
 
     if (response.status === 200) {
       const data: LoggedInUser = response.data;
-      updateUser(data)
-      return data;
+      storeToken(data.key);
+      storeId(data.user.id);
     } else {
       const errorData = response.data;
-      console.log(errorData)
+      console.log(errorData);
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 };
 
-export const logout = async (token: string, updateUser: (user: UserInfo | null) => void) => {
+export const logout = async (token: string) => {
   try {
     const response = await axios.post(
       'http://127.0.0.1:8000/auth/logout/',
@@ -62,8 +62,8 @@ export const logout = async (token: string, updateUser: (user: UserInfo | null) 
     );
 
     if (response.status === 200) {
-      updateUser(null)
-      // TODO successful logout
+      deleteCookie('userId');
+      deleteCookie('token');
     } else {
       const errorData = response.data;
       console.log(errorData)

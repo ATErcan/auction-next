@@ -44,7 +44,7 @@ const formSchema = z.object({
 })
 
 const RegisterForm = () => {
-  const router = useRouter()
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -121,7 +121,7 @@ const RegisterForm = () => {
           render={({ field }) => (
             <FormItem className='space-y-0'>
               <FormControl>
-                <Input placeholder="Password" type='password' {...field} />
+                <Input placeholder="Password" type='password' {...field} autoComplete='on' />
               </FormControl>
               <FormMessage className='text-xs' />
             </FormItem>
@@ -133,7 +133,7 @@ const RegisterForm = () => {
           render={({ field }) => (
             <FormItem className='space-y-0'>
               <FormControl>
-                <Input placeholder="Confirm your password" type='password' {...field} />
+                <Input placeholder="Confirm your password" type='password' {...field} autoComplete='on' />
               </FormControl>
               <FormMessage className='text-xs' />
             </FormItem>

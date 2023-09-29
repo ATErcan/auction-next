@@ -6,6 +6,8 @@ import { Input } from "../ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
+import { login } from "../auth/authentication";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -21,6 +23,7 @@ const formSchema = z.object({
 })
 
 const LoginForm = () => {
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -31,7 +34,9 @@ const LoginForm = () => {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+    login(values.username, values.password);
+    form.reset();
+    router.push("/");
   }
 
   return (
@@ -55,7 +60,7 @@ const LoginForm = () => {
           render={({ field }) => (
             <FormItem className='space-y-0'>
               <FormControl>
-                <Input placeholder="Password" type='password' {...field} />
+                <Input placeholder="Password" type='password' {...field} autoComplete='on' />
               </FormControl>
               <FormMessage className='text-xs' />
             </FormItem>

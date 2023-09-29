@@ -2,6 +2,8 @@ import ResponsiveAppBar from '@/components/AppBar/AppBar'
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { AuthProvider } from '@/components/auth/AuthContext'
+import { cookies } from 'next/headers';
+import { ClientCookiesProvider } from '@/components/auth/ClientCookiesProvider';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,10 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AuthProvider>
-          <ResponsiveAppBar />
-          {children}
-        </AuthProvider>
+        <ClientCookiesProvider value={cookies().getAll()}>
+          <AuthProvider>
+            <ResponsiveAppBar />
+            {children}
+          </AuthProvider>
+        </ClientCookiesProvider>
       </body>
     </html>
   )

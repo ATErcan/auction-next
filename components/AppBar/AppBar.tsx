@@ -15,12 +15,38 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
+import { nanoid } from 'nanoid'
+import Link from 'next/link';
+import { getUserToken } from '../auth/getUser';
+import { logout } from '../auth/authentication';
+import { useRouter } from 'next/navigation';
+
 const pages = ['Auctions', 'Login', 'Register'];
-const settings = ['Profile', 'Items', 'Logout'];
+// const settings = ['Profile', 'Items', 'Logout'];
+
+const settings = [
+  {
+    id: nanoid(),
+    name: "Profile",
+    url: "/profile"
+  },
+  {
+    id: nanoid(),
+    name: "Items",
+    url: "/items"
+  },
+  {
+    id: nanoid(),
+    name: "Logout",
+    url: "#"
+  }
+]
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
+  const router = useRouter();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -36,6 +62,12 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  // const handleLogout = () => {
+  //   handleCloseUserMenu();
+  //   logout();
+  //   router.push('/');
+  // }
 
   return (
     <AppBar position="static">
@@ -149,8 +181,8 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem key={setting.id} onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center"><Link href={setting.url}>{setting.name}</Link></Typography>
                 </MenuItem>
               ))}
             </Menu>
