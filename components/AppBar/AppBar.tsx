@@ -17,12 +17,29 @@ import AdbIcon from '@mui/icons-material/Adb';
 
 import { nanoid } from 'nanoid'
 import Link from 'next/link';
-// import { getUserToken } from '../auth/getUser';
-import { logout } from '../auth/authentication';
+import { logout } from '../auth/getUser';
 import { useRouter } from 'next/navigation';
 
-const pages = ['Auctions', 'Login', 'Register'];
+// const pages = ['Auctions', 'Login', 'Register'];
 // const settings = ['Profile', 'Items', 'Logout'];
+
+const pages = [
+  {
+    id: nanoid(),
+    name: "Auctions",
+    url: "/auctions"
+  },
+  {
+    id: nanoid(),
+    name: "Login",
+    url: "/login"
+  },
+  {
+    id: nanoid(),
+    name: "Register",
+    url: "/register"
+  }
+]
 
 const settings = [
   {
@@ -63,11 +80,18 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
-  // const handleLogout = () => {
-  //   handleCloseUserMenu();
-  //   logout();
-  //   router.push('/');
-  // }
+  const handleSettingClick = (name: string) => {
+    handleCloseUserMenu();
+    if(name === "Logout") {
+      logout().then(result => {
+        if(result.success) {
+          router.push('/');
+        } else {
+          console.log(result.error);
+        }
+      })
+    }
+  }
 
   return (
     <AppBar position="static">
@@ -121,8 +145,8 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem key={page.id} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center"><Link href={page.url}>{page.name}</Link></Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -149,11 +173,11 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
-                key={page}
+                key={page.id}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
+                <Link href={page.url}>{page.name}</Link>
               </Button>
             ))}
           </Box>
@@ -181,7 +205,7 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting.id} onClick={handleCloseUserMenu}>
+                <MenuItem key={setting.id} onClick={() => handleSettingClick(setting.name)}>
                   <Typography textAlign="center"><Link href={setting.url}>{setting.name}</Link></Typography>
                 </MenuItem>
               ))}

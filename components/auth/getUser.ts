@@ -1,30 +1,63 @@
 'use server';
 
-import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 import { cookies } from 'next/headers'
 import axios from 'axios';
 
 const cookieStore = cookies();
 
-export const getUser = async (id: RequestCookie, token: RequestCookie) => {
-  const url = `http://127.0.0.1:8000/users/user/${id.value}/`;
+export const getUser = async () => {
+  const id = cookies().get('userId');
+  const token = cookies().get('token');
+  if(token && id) {
+    const url = `http://127.0.0.1:8000/users/user/${id.value}/`;
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${token.value}`,
+        },
+      });
+      if(response.status === 200){
+        const data: UserInfo = response.data;
+        return data;
+      } else {
+        const errorData = response.data;
+        console.log(errorData)
+      }
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  } else {
+    return null;
+  }
+};
+
+export const logout = async () => {
+  const token = cookies().get('token');
   try {
-    const response = await axios.get(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Token ${token.value}`,
-      },
-    });
-    if(response.status === 200){
-      const data: UserInfo = response.data;
-      return data;
+    const response = await axios.post(
+      'http://127.0.0.1:8000/auth/logout/',
+      {},
+      {
+        headers: {
+          Authorization: `Token ${token?.value}`,
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      cookies().delete('userId');
+      cookies().delete('token');
+      return { success: true };
     } else {
       const errorData = response.data;
       console.log(errorData)
+      return { success: false, error: errorData };
     }
   } catch (error) {
     console.log(error);
-    throw error;
+    return { success: false, error: 'An error occurred' };
   }
 };
 

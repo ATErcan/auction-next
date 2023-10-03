@@ -16,9 +16,10 @@ export const register = async (userData: RegisterUser) => {
       const data: NewUser = response.data;
       storeToken(data.token);
       storeId(data.id);
+      return { success: true };
     } else {
       const errorData = response.data;
-      console.log(errorData);
+      return { success: false, error: errorData };
     }
   } catch (error) {
     if(axios.isAxiosError(error)){
@@ -26,6 +27,7 @@ export const register = async (userData: RegisterUser) => {
     } else {
       console.log(error);
     }
+    return { success: false, error: 'An error occurred' };
   }
 }
 
@@ -48,29 +50,5 @@ export const login = async (username: string, password: string) => {
   } catch (error) {
     console.log(error);
     return { success: false, error: 'An error occurred' };
-  }
-};
-
-export const logout = async (token: string) => {
-  try {
-    const response = await axios.post(
-      'http://127.0.0.1:8000/auth/logout/',
-      {},
-      {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      }
-    );
-
-    if (response.status === 200) {
-      deleteCookie('userId');
-      deleteCookie('token');
-    } else {
-      const errorData = response.data;
-      console.log(errorData)
-    }
-  } catch (error) {
-    console.log(error)
   }
 };
