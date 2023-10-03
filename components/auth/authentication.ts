@@ -40,12 +40,14 @@ export const login = async (username: string, password: string) => {
       const data: LoggedInUser = response.data;
       storeToken(data.key);
       storeId(data.user.id);
+      return { success: true };
     } else {
       const errorData = response.data;
-      console.log(errorData);
+      return { success: false, error: errorData };
     }
   } catch (error) {
     console.log(error);
+    return { success: false, error: 'An error occurred' };
   }
 };
 

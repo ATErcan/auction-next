@@ -29,7 +29,7 @@ export const getUser = async (id: RequestCookie, token: RequestCookie) => {
 };
 
 
-export const storeToken = async (token: string) => {
+export async function storeToken(token: string) {
   cookies().set({
     name: 'token',
     value: token,
@@ -40,7 +40,7 @@ export const storeToken = async (token: string) => {
   })
 }
 
-export const storeId = async (id: number) => {
+export async function storeId(id: number) {
   cookies().set({
     name: 'userId',
     value: id.toString(),
@@ -51,16 +51,16 @@ export const storeId = async (id: number) => {
   })
 }
 
-export const getUserToken = async () => {
+export async function getUserToken() {
   const token = cookieStore.get('token');
   return token;
 }
 
-export const getUserId = async () => {
+export async function getUserId() {
   const userId = cookieStore.get('userId');
   return userId;
 }
 
-export const deleteCookie = async (name: string) => {
+export async function deleteCookie(name: string) {
   cookieStore.delete(name);
 }

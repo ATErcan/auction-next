@@ -1,22 +1,13 @@
 'use client';
 
 import { AuthContext } from '@/components/auth/AuthContext'
-import { getUserToken } from '@/components/auth/getUser';
 import Image from 'next/image'
 import { useContext, useEffect } from 'react'
 
 export default function Home() {
 
   const { user } = useContext(AuthContext);
-  console.log(user);
-
-  useEffect(() => {
-    try{
-      getUserToken().then(res => console.log(res))
-    } catch(error) {
-      console.log(error);
-    }
-  }, [])
+  // console.log(user);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">

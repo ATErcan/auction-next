@@ -17,7 +17,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 
 import { nanoid } from 'nanoid'
 import Link from 'next/link';
-import { getUserToken } from '../auth/getUser';
+// import { getUserToken } from '../auth/getUser';
 import { logout } from '../auth/authentication';
 import { useRouter } from 'next/navigation';
 

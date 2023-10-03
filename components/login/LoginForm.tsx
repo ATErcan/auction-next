@@ -34,9 +34,18 @@ const LoginForm = () => {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    login(values.username, values.password);
-    form.reset();
-    router.push("/");
+    login(values.username, values.password)
+    .then((result) => {
+      if (result.success) {
+        form.reset();
+        router.push("/");
+      } else {
+        console.log(result.error);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
   return (
