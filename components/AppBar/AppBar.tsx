@@ -111,6 +111,7 @@ function ResponsiveAppBar() {
               color: 'inherit',
               textDecoration: 'none',
             }}
+            className='text-2xl'
           >
             T-A-B Auction
           </Typography>
@@ -151,7 +152,6 @@ function ResponsiveAppBar() {
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -163,10 +163,11 @@ function ResponsiveAppBar() {
               flexGrow: 1,
               fontFamily: 'monospace',
               fontWeight: 700,
-              letterSpacing: '.3rem',
+              letterSpacing: {xs: '0', sm: '0.3rem'},
               color: 'inherit',
               textDecoration: 'none',
             }}
+            className='text-base 2xs:text-lg xs:text-2xl'
           >
             T-A-B Auction
           </Typography>
@@ -185,7 +186,7 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Remy Sharp" sx={{ width: '20px', height: '20px', padding: '20px' }}>T</Avatar>
               </IconButton>
             </Tooltip>
             <Menu

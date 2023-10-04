@@ -2,7 +2,6 @@ import ResponsiveAppBar from '@/components/AppBar/AppBar'
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { AuthProvider } from '@/components/auth/AuthContext'
-import { cookies } from 'next/headers';
 
 const inter = Inter({ subsets: ['latin'] })
 
