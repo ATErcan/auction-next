@@ -2,7 +2,7 @@
 
 import { createContext, useEffect, useState } from 'react';
 import { getUser } from './getUser';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 export const AuthContext = createContext<{ user: UserInfo | null }>({
   user: null
@@ -11,6 +11,7 @@ export const AuthContext = createContext<{ user: UserInfo | null }>({
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<UserInfo | null>(null);
 
+  const router = useRouter();
   const pathname = usePathname();
 
   async function updateUser() {
@@ -30,7 +31,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     updateUser();
-  }, [pathname])
+  }, [pathname, router])
   
   return (
     <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
